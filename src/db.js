@@ -32,10 +32,11 @@ function builSquelize() {
       );
 
     default:
-      return new Sequelize(
-        "postgres://postgres:Messiyyaco@localhost:5432/Agents-local",
-        { logging: false }
-      );
+      return;
+    // new Sequelize(
+    //   "postgres://postgres:Messiyyaco@localhost:5432/Gastos",
+    //   { logging: false }
+    // );
   }
 }
 

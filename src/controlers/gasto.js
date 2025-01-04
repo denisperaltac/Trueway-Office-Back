@@ -1,11 +1,12 @@
 const {
   addGastoService,
   getGastosService,
+  deleteGastoService,
 } = require("../services/gastosService");
 
 const getGastos = async (req, res) => {
   try {
-    const result = await getGastosService(req.query);
+    const result = await getGastosService(req);
     res.status(200).json(result);
   } catch (e) {
     res.status(500).send("Internal Server Error");
@@ -22,7 +23,17 @@ const addGasto = async (req, res) => {
   }
 };
 
+const deleteGasto = async (req, res) => {
+  try {
+    await deleteGastoService(req.body.id);
+    res.status(200).json("Gasto agregada");
+  } catch (e) {
+    console.log("Error in addGasto controller" + e);
+  }
+};
+
 module.exports = {
   addGasto,
   getGastos,
+  deleteGasto,
 };

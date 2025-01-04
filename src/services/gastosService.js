@@ -36,6 +36,7 @@ async function getGastosService(req) {
       where: where,
       limit: pagination.size,
       offset: offset,
+      order: [["fechaEfectuado", "DESC"]],
     });
 
     return { result: Gastos, count };
@@ -70,7 +71,24 @@ async function addGastoService(Info) {
   }
 }
 
+async function deleteGastoService(id) {
+  try {
+    NuevoGasto = await Gasto.update(
+      { deleted: true },
+      {
+        where: { id },
+      }
+    );
+
+    return { message: "Gasto Eliminado" };
+  } catch (error) {
+    console.error(error);
+    throw new Exception(500, "Error in deleteGastoService");
+  }
+}
+
 module.exports = {
   getGastosService,
   addGastoService,
+  deleteGastoService,
 };
