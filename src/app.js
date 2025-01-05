@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const routes = require("./routes/routes.js");
 
 // require('./db.js');
-
+console.log("test");
 const server = express();
 
 server.name = "API";
