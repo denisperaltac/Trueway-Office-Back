@@ -26,19 +26,15 @@ app.use((req, res, next) => {
 // Rutas de la aplicación
 app.use("/", routes);
 
-app.listen(8080, () => {
-  console.log("Server on: Listening at http://localhost:8080");
-});
-// // Sincronización de la base de datos y arranque del servidor
-// sequelize
-//   .sync({ force: false })
-//   .then(() => {
-//     // El servidor escucha en el puerto 8080
-//     app.listen(8080, () => {
-//       console.log("Server on: Listening at http://localhost:8080");
-//     });
-//   })
-//   .catch((e) => {
-//     console.error("Error al sincronizar la base de datos: ", e);
-//     process.exit(1); // Termina el proceso si hay un error en la base de datos
-//   });
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    // El servidor escucha en el puerto 8080
+    app.listen(8080, () => {
+      console.log("Server on: Listening at http://localhost:8080");
+    });
+  })
+  .catch((e) => {
+    console.error("Error al sincronizar la base de datos: ", e);
+    process.exit(1); // Termina el proceso si hay un error en la base de datos
+  });
