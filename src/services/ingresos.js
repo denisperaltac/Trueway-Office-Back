@@ -1,6 +1,7 @@
 const { Ingreso } = require("../db");
 const { Op } = require("sequelize");
 const Exception = require("../exceptions/exception");
+const { Sequelize } = require("sequelize");
 
 async function getIngresosService(req) {
   let filters = {
@@ -17,7 +18,7 @@ async function getIngresosService(req) {
   try {
     let where = {
       deleted: false,
-      date: {
+      fecha: {
         [Op.between]: [filters.dateFrom, filters.dateTo],
       },
     };
@@ -36,7 +37,7 @@ async function getIngresosService(req) {
       where: where,
       limit: pagination.size,
       offset: offset,
-      order: [["date", "DESC"]],
+      order: [["fecha", "DESC"]],
     });
 
     return { result: Ingresos, count };
@@ -50,7 +51,8 @@ async function addIngresoService(Info) {
   const IngresoInfo = {
     type: Info.type,
     monto: Info.monto,
-    date: Info.date || new Date(),
+    fecha: Info.fecha || new Date(),
+    hora: Info.hora,
     cajaId: Info.cajaId,
   };
   try {
@@ -86,8 +88,51 @@ async function deleteIngresoService(id) {
   }
 }
 
+async function getIngresosByDayService() {
+  const startOfMonth = new Date();
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
+
+  const endOfMonth = new Date(startOfMonth);
+  endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+
+  const ingresosByDay = await Ingreso.findAll({
+    attributes: [
+      [
+        Sequelize.literal(`DATE_TRUNC('day', "fecha" AT TIME ZONE 'GMT-3')`),
+        "day",
+      ],
+      [Sequelize.fn("SUM", Sequelize.col("monto")), "amount"],
+      [Sequelize.literal(`MIN("fecha")`), "another"], // Para verificar la fecha real
+    ],
+    where: {
+      fecha: {
+        [Op.gte]: startOfMonth,
+        [Op.lt]: endOfMonth,
+      },
+      deleted: false,
+    },
+    group: [
+      Sequelize.literal(`DATE_TRUNC('day', "fecha" AT TIME ZONE 'GMT-3')`),
+    ],
+    order: [
+      [
+        Sequelize.literal(`DATE_TRUNC('day', "fecha" AT TIME ZONE 'GMT-3')`),
+        "ASC",
+      ],
+    ],
+    raw: true,
+  });
+
+  return ingresosByDay.map((item) => ({
+    day: new Date(item.day).getDate(),
+    amount: parseFloat(item.amount),
+  }));
+}
+
 module.exports = {
   getIngresosService,
   addIngresoService,
   deleteIngresoService,
+  getIngresosByDayService,
 };

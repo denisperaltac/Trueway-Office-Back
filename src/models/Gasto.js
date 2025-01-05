@@ -19,8 +19,12 @@ const Gasto = (sequelize) => {
     categoriaId: {
       type: DataTypes.INTEGER,
     },
-    fechaEfectuado: {
-      type: DataTypes.DATE,
+    fecha: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    hora: {
+      type: DataTypes.TIME,
       allowNull: false,
     },
     notes: {

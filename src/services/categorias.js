@@ -4,17 +4,15 @@ const Exception = require("../exceptions/exception");
 
 async function getCategoriasService(req) {
   let filters = {
-    Status: req.Status,
-    Type: req.Type,
-    dateFrom: req.dateFrom || new Date("1900-01-01").toISOString(),
-    dateTo: req.dateTo || new Date("2200-01-01").toISOString(),
-    sort: req.sort?.split(","),
-    multiSearch: req.multiSearch,
+    name: req.query.name,
+    dateFrom: req.query.dateFrom || new Date("1900-01-01").toISOString(),
+    dateTo: req.query.dateTo || new Date("2200-01-01").toISOString(),
+    sort: req.query.sort?.split(","),
   };
 
   const pagination = {
-    size: req.size ?? 10,
-    page: req.page ?? 1,
+    size: req.query.size ?? 10,
+    page: req.query.page ?? 1,
   };
 
   try {

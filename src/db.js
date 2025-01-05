@@ -1,7 +1,6 @@
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
-
 const { Sequelize } = require("sequelize");
 
 const sequelize = builSquelize();
@@ -62,7 +61,7 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Categoria, Gasto } = sequelize.models;
+const { Categoria, Gasto, Proveedor } = sequelize.models;
 
 Gasto.belongsTo(Categoria, {
   foreignKey: {
@@ -74,7 +73,20 @@ Gasto.belongsTo(Categoria, {
 
 Categoria.hasMany(Gasto, {
   foreignKey: "categoriaId",
-  as: "gastos",
+  as: "gastosCat",
+});
+
+Gasto.belongsTo(Proveedor, {
+  foreignKey: {
+    name: "categoriaId",
+    allowNull: false,
+  },
+  as: "proovedor",
+});
+
+Proveedor.hasMany(Gasto, {
+  foreignKey: "categoriaId",
+  as: "gastosProv",
 });
 
 module.exports = {

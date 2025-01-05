@@ -1,11 +1,11 @@
 const {
   getCategoriasService,
   addCategoriaService,
-} = require("../services/categoriasService");
+} = require("../services/categorias");
 
 const getCategorias = async (req, res) => {
   try {
-    const result = await getCategoriasService(req.query);
+    const result = await getCategoriasService(req);
     res.status(200).json(result);
   } catch (e) {
     res.status(500).send("Internal Server Error");

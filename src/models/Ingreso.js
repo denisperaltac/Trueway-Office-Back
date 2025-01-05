@@ -21,9 +21,12 @@ const Ingreso = (sequelize) => {
       ),
       allowNull: false,
     },
-    date: {
-      type: DataTypes.DATE,
+    fecha: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
+    },
+    hora: {
+      type: DataTypes.TIME,
     },
     cajaId: {
       type: DataTypes.INTEGER,

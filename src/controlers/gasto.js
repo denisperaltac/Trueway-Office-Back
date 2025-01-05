@@ -2,7 +2,8 @@ const {
   addGastoService,
   getGastosService,
   deleteGastoService,
-} = require("../services/gastosService");
+  getGastosByDayService,
+} = require("../services/gastos");
 
 const getGastos = async (req, res) => {
   try {

@@ -1,6 +1,7 @@
 const { Gasto } = require("../db");
 const { Op } = require("sequelize");
 const Exception = require("../exceptions/exception");
+const { Sequelize } = require("sequelize");
 
 async function getGastosService(req) {
   let filters = {
@@ -36,7 +37,7 @@ async function getGastosService(req) {
       where: where,
       limit: pagination.size,
       offset: offset,
-      order: [["fechaEfectuado", "DESC"]],
+      order: [["fecha", "DESC"]],
     });
 
     return { result: Gastos, count };
@@ -51,7 +52,7 @@ async function addGastoService(Info) {
     name: Info.nombreGasto,
     categoriaId: Info.categoriaGasto,
     monto: Info.montoGasto,
-    fechaEfectuado: Info.fechaPago || new Date(),
+    fecha: Info.fechaPago || new Date(),
     pagado: Info.pagado,
   };
   try {
@@ -87,8 +88,51 @@ async function deleteGastoService(id) {
   }
 }
 
+async function getGastosByDayService() {
+  const startOfMonth = new Date();
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
+
+  const endOfMonth = new Date(startOfMonth);
+  endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+
+  const gastosByDay = await Gasto.findAll({
+    attributes: [
+      [
+        Sequelize.literal(`DATE_TRUNC('day', "fecha" AT TIME ZONE 'GMT-3')`),
+        "day",
+      ],
+      [Sequelize.fn("SUM", Sequelize.col("monto")), "amount"],
+      [Sequelize.literal(`MIN("fecha")`), "another"], // Para verificar la fecha real
+    ],
+    where: {
+      fecha: {
+        [Op.gte]: startOfMonth,
+        [Op.lt]: endOfMonth,
+      },
+      deleted: false,
+    },
+    group: [
+      Sequelize.literal(`DATE_TRUNC('day', "fecha" AT TIME ZONE 'GMT-3')`),
+    ],
+    order: [
+      [
+        Sequelize.literal(`DATE_TRUNC('day', "fecha" AT TIME ZONE 'GMT-3')`),
+        "ASC",
+      ],
+    ],
+    raw: true,
+  });
+
+  return gastosByDay.map((item) => ({
+    day: new Date(item.day).getDate(),
+    amount: parseFloat(item.amount),
+  }));
+}
+
 module.exports = {
   getGastosService,
   addGastoService,
   deleteGastoService,
+  getGastosByDayService,
 };

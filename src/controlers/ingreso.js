@@ -2,7 +2,7 @@ const {
   addIngresoService,
   getIngresosService,
   deleteIngresoService,
-} = require("../services/ingresosService");
+} = require("../services/ingresos");
 
 const getIngresos = async (req, res) => {
   try {
