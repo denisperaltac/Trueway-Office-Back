@@ -31,7 +31,11 @@ sequelize
   .then(() => {
     // El servidor escucha en el puerto 8080
     app.listen(8080, () => {
-      console.log("Server on: Listening at http://localhost:8080");
+      if (process.env.ENVIROMENT === "local") {
+        console.log("Server on: Listening at http://localhost:8080");
+      } else {
+        console.log("Server on, production");
+      }
     });
   })
   .catch((e) => {
