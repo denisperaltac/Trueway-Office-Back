@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const routes = require("../src/routes/routes.js");
 const { sequelize } = require("../src/db");
+const Categoria = require("../src/models/Categoria.js");
 
 const app = express();
 
@@ -42,3 +43,5 @@ sequelize
     console.error("Error al sincronizar la base de datos: ", e);
     process.exit(1); // Termina el proceso si hay un error en la base de datos
   });
+
+Categoria(sequelize);
