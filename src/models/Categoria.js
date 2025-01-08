@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize");
 
 const Categoria = (sequelize) => {
-  console.log("Instancia de sequelize:", sequelize);
   sequelize.define("Categoria", {
     categoriaId: {
       type: DataTypes.INTEGER,
@@ -19,5 +18,4 @@ const Categoria = (sequelize) => {
     },
   });
 };
-
 module.exports = Categoria;
