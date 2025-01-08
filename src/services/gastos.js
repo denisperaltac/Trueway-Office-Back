@@ -49,10 +49,11 @@ async function getGastosService(req) {
 
 async function addGastoService(Info) {
   const GastoInfo = {
-    name: Info.nombreGasto,
-    categoriaId: Info.categoriaGasto,
-    monto: Info.montoGasto,
-    fecha: Info.fechaPago || new Date(),
+    name: Info.name,
+    categoriaId: Info.categoriaId,
+    proveedorId: Info.proveedorId,
+    monto: Info.monto,
+    fecha: Info.fecha || new Date(),
     pagado: Info.pagado,
   };
   try {
