@@ -30,6 +30,6 @@
     "redis": "^4.6.14",
     "sequelize": "^6.37.5",
     "sequelize-cli": "^6.4.1",
-    "serverless-sequelize-migrations": "^1.1.1"
+    "serverless-sequelize-migrations": "^1.1.2"
   }
 }
