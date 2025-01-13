@@ -60,7 +60,7 @@ async function addGastoService(Info) {
     let NuevoGasto;
     if (Info.gastoId) {
       NuevoGasto = await Gasto.update(GastoInfo, {
-        where: { id: Info.id },
+        where: { gastoId: Info.gastoId },
       });
     } else {
       NuevoGasto = await Gasto.create(GastoInfo);
@@ -78,7 +78,7 @@ async function deleteGastoService(id) {
     NuevoGasto = await Gasto.update(
       { deleted: true },
       {
-        where: { id },
+        where: { gastoId: id },
       }
     );
 
