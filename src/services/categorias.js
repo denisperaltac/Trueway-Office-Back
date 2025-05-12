@@ -11,7 +11,7 @@ async function getCategoriasService(req) {
   };
 
   const pagination = {
-    size: req.query.size ?? 10,
+    size: req.query.size ?? 999,
     page: req.query.page ?? 1,
   };
 

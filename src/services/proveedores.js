@@ -11,7 +11,7 @@ async function getProveedoresService(req) {
   };
 
   const pagination = {
-    size: req.querysize ?? 10,
+    size: req.querysize ?? 999,
     page: req.query.page ?? 1,
   };
 
