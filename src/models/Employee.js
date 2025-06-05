@@ -39,7 +39,14 @@ const Employee = (sequelize) => {
       allowNull: false,
     },
     department: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM(
+        "Desarrollador",
+        "Marketing",
+        "Oficina",
+        "Realtor",
+        "Seguro",
+        "Call Center"
+      ),
       allowNull: false,
     },
     position: {

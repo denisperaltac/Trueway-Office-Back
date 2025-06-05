@@ -1,12 +1,12 @@
-const employeeService = require("../services/employeeService");
+const employee = require("../services/employee");
 
 class EmployeeController {
   async createEmployee(req, res) {
     try {
-      const employee = await employeeService.createEmployee(req.body);
+      const newEmployee = await employee.createEmployee(req.body);
       res.status(201).json({
         success: true,
-        data: employee,
+        data: newEmployee,
       });
     } catch (error) {
       res.status(400).json({
@@ -18,7 +18,7 @@ class EmployeeController {
 
   async getAllEmployees(req, res) {
     try {
-      const employees = await employeeService.getAllEmployees(req.query);
+      const employees = await employee.getAllEmployees(req.query);
       res.status(200).json({
         success: true,
         ...employees,
@@ -33,7 +33,7 @@ class EmployeeController {
 
   async getEmployeeById(req, res) {
     try {
-      const employee = await employeeService.getEmployeeById(req.params.id);
+      const employee = await employee.getEmployeeById(req.params.id);
       res.status(200).json({
         success: true,
         data: employee,
@@ -48,10 +48,7 @@ class EmployeeController {
 
   async updateEmployee(req, res) {
     try {
-      const employee = await employeeService.updateEmployee(
-        req.params.id,
-        req.body
-      );
+      const employee = await employee.updateEmployee(req.params.id, req.body);
       res.status(200).json({
         success: true,
         data: employee,
@@ -66,7 +63,7 @@ class EmployeeController {
 
   async deleteEmployee(req, res) {
     try {
-      const result = await employeeService.deleteEmployee(req.params.id);
+      const result = await employee.deleteEmployee(req.params.id);
       res.status(200).json({
         success: true,
         ...result,
@@ -81,7 +78,7 @@ class EmployeeController {
 
   async getEmployeesByDepartment(req, res) {
     try {
-      const employees = await employeeService.getEmployeesByDepartment(
+      const employees = await employee.getEmployeesByDepartment(
         req.params.department
       );
       res.status(200).json({
@@ -99,7 +96,7 @@ class EmployeeController {
   async updateEmployeeStatus(req, res) {
     try {
       const { status } = req.body;
-      const employee = await employeeService.updateEmployeeStatus(
+      const employee = await employee.updateEmployeeStatus(
         req.params.id,
         status
       );

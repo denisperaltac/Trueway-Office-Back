@@ -4,7 +4,7 @@ const { getProveedores, addProveedor } = require("../../controlers/proveedor");
 const router = Router();
 
 // Supplier routes
-router.get("/", getProveedores);
-router.post("/", addProveedor);
+router.get("/get", getProveedores);
+router.post("/add", addProveedor);
 
 module.exports = router;

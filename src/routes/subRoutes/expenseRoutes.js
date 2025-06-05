@@ -4,8 +4,8 @@ const { addGasto, getGastos, deleteGasto } = require("../../controlers/gasto");
 const router = Router();
 
 // Expense routes
-router.post("/", addGasto);
-router.get("/", getGastos);
-router.delete("/:id", deleteGasto);
+router.post("/add", addGasto);
+router.get("/get", getGastos);
+router.delete("/delete/:id", deleteGasto);
 
 module.exports = router;

@@ -67,7 +67,24 @@ async function addCategoriaService(Info) {
   }
 }
 
+async function updateCategoriaService(id, data) {
+  try {
+    const { name } = data;
+    const categoria = await Categoria.findByPk(id);
+
+    if (!categoria) {
+      throw new Error("Categoría no encontrada");
+    }
+
+    await categoria.update({ name });
+    return categoria;
+  } catch (error) {
+    throw new Error("Error al actualizar categoría: " + error.message);
+  }
+}
+
 module.exports = {
   getCategoriasService,
   addCategoriaService,
+  updateCategoriaService,
 };

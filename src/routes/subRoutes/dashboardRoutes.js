@@ -4,6 +4,6 @@ const { stadisticByDay } = require("../../controlers/home");
 const router = Router();
 
 // Dashboard routes
-router.get("/statistics", stadisticByDay);
+router.get("/stadisticByDay", stadisticByDay);
 
 module.exports = router;

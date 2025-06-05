@@ -8,8 +8,8 @@ const {
 const router = Router();
 
 // Income routes
-router.post("/", addIngreso);
-router.get("/", getIngresos);
-router.delete("/:id", deleteIngreso);
+router.post("/add", addIngreso);
+router.get("/get", getIngresos);
+router.delete("/delete/:id", deleteIngreso);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const Employee = require("../models/Employee");
+const { Employee } = require("../db");
 const { Op } = require("sequelize");
 
 class EmployeeService {

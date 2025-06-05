@@ -1,6 +1,7 @@
 const {
   getCategoriasService,
   addCategoriaService,
+  updateCategoriaService,
 } = require("../services/categorias");
 
 const getCategorias = async (req, res) => {
@@ -19,10 +20,23 @@ const addCategoria = async (req, res) => {
     res.status(200).json("Categoria agregada");
   } catch (e) {
     console.log("Error in addCategoria controller" + e);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+const updateCategoria = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await updateCategoriaService(id, req.body);
+    res.status(200).json(result);
+  } catch (e) {
+    console.log("Error in updateCategoria controller" + e);
+    res.status(500).send("Internal Server Error");
   }
 };
 
 module.exports = {
-  addCategoria,
   getCategorias,
+  addCategoria,
+  updateCategoria,
 };
