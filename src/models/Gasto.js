@@ -13,7 +13,7 @@ const Gasto = (sequelize) => {
       allowNull: false,
     },
     monto: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
     categoriaId: {

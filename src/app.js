@@ -2,9 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const routes = require("./routes/routes.js");
-
-// require('./db.js');
-console.log("test");
+W;
 const server = express();
 
 server.name = "API";

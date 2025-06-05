@@ -16,7 +16,7 @@ function builSquelize() {
   };
 
   switch (process.env.NODE_ENV) {
-    case "Caffito":
+    case "production":
       return new Sequelize(
         process.env.POSTGRES_DATABASE,
         process.env.POSTGRES_USER,
@@ -32,10 +32,12 @@ function builSquelize() {
 
     default:
       return;
-    // new Sequelize(
-    //   "postgres://postgres:Messiyyaco@localhost:5432/Gastos",
-    //   { logging: false }
-    // );
+      new Sequelize(
+        "postgres://postgres:Messiyyaco@localhost:5432/Caffito Office",
+        {
+          logging: false,
+        }
+      );
   }
 }
 

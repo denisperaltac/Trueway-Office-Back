@@ -1,5 +1,5 @@
 {
-  "name": "back",
+  "name": "gastos-hub-back",
   "version": "1.0.0",
   "description": "",
   "main": "./api/index.js",
