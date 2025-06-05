@@ -2,7 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const routes = require("../src/routes/routes.js");
+const routes = require("../src/routes/index.js");
 const { sequelize } = require("../src/db");
 
 const app = express();
