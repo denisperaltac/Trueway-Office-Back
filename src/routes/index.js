@@ -7,14 +7,28 @@ const supplierRoutes = require("./subRoutes/supplierRoutes");
 const employeeRoutes = require("./subRoutes/employeeRoutes");
 const dashboardRoutes = require("./subRoutes/dashboardRoutes");
 const areaRoutes = require("./subRoutes/areaRoutes");
+const usuarioRoutes = require("./subRoutes/usuarioRoutes");
+const { verificarToken } = require("../middleware/auth");
 
 const router = Router();
 
 // Health check
 router.get("/", (_, res) => res.status(200).send("200"));
 
-// API Routes
+// Rutas de autenticación (sin middleware)
 router.use("/auth", authRoutes);
+router.use("/usuarios", usuarioRoutes);
+
+// Middleware de autenticación para todas las demás rutas
+router.use((req, res, next) => {
+  // Excluir rutas de autenticación
+  if (req.path.startsWith("/auth")) {
+    return next();
+  }
+  verificarToken(req, res, next);
+});
+
+// API Routes (protegidas)
 router.use("/expenses", expenseRoutes);
 router.use("/income", incomeRoutes);
 router.use("/categories", categoryRoutes);

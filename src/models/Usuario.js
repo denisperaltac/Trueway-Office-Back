@@ -13,10 +13,22 @@ const Usuario = (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    userName: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    rol: {
+      type: DataTypes.ENUM("admin", "usuario"),
+      defaultValue: "usuario",
+    },
+    activo: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
     password: {
       type: DataTypes.STRING,

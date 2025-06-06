@@ -1,46 +1,78 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const { Usuario } = require("../db");
 
-const login = (req, res) => {
-  Usuario.findOne({
-    where: {
-      userName: req.body.userName,
-      deleted: false,
-    },
-  })
-    .then((dbUser) => {
-      if (!dbUser) {
-        return res.status(404).json({ message: "User not found" });
-      } else {
-        // password hash
-        bcrypt.compare(
-          req.body.password,
-          dbUser.password,
-          (err, compareRes) => {
-            if (err) {
-              // error while comparing
-              res
-                .status(502)
-                .json({ message: "error while checking user password" });
-            } else if (compareRes) {
-              // password match
-              res.status(200).json({
-                message: "user logged in",
-                name: dbUser.name,
-                userName: dbUser.userName,
-                userId: dbUser.userId,
-              });
-            } else {
-              // password doesnt match
-              res.status(401).json({ message: "Password Incorrect" });
-            }
-          }
-        );
-      }
-    })
-    .catch((err) => {
-      console.log("Error in login controllers: " + err);
+const login = async (req, res) => {
+  try {
+    const usuario = await Usuario.findOne({
+      where: {
+        email: req.body.email,
+        deleted: false,
+      },
     });
+
+    if (!usuario) {
+      return res.status(404).json({
+        success: false,
+        error: "Usuario no encontrado",
+      });
+    }
+
+    // Verificar si el usuario está activo
+    if (!usuario.activo) {
+      return res.status(401).json({
+        success: false,
+        error: "Usuario inactivo",
+      });
+    }
+
+    // Comparar contraseñas
+    const passwordMatch = await bcrypt.compare(
+      req.body.password,
+      usuario.password
+    );
+
+    if (!passwordMatch) {
+      return res.status(401).json({
+        success: false,
+        error: "Contraseña incorrecta",
+      });
+    }
+
+    // Generar token JWT
+    const token = jwt.sign(
+      {
+        id: usuario.userId,
+        email: usuario.email,
+        rol: usuario.rol,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    // Actualizar último acceso
+    await usuario.update({ ultimoAcceso: new Date() });
+
+    // Devolver respuesta exitosa con token
+    res.status(200).json({
+      success: true,
+      result: {
+        token,
+        usuario: {
+          id: usuario.userId,
+          nombre: usuario.name,
+          email: usuario.email,
+          rol: usuario.rol,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Error en login:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error en el servidor",
+    });
+  }
 };
 
 module.exports = {
