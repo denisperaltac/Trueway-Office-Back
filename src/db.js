@@ -63,7 +63,8 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Categoria, Gasto, Proveedor } = sequelize.models;
+const { Categoria, Gasto, Proveedor, Area, Ingreso, Employee } =
+  sequelize.models;
 
 Gasto.belongsTo(Categoria, {
   foreignKey: {
@@ -80,15 +81,44 @@ Categoria.hasMany(Gasto, {
 
 Gasto.belongsTo(Proveedor, {
   foreignKey: {
-    name: "categoriaId",
-    allowNull: false,
+    name: "proveedorId",
+    allowNull: true,
   },
-  as: "proovedor",
+  as: "proveedor",
 });
 
 Proveedor.hasMany(Gasto, {
   foreignKey: "categoriaId",
   as: "gastosProv",
+});
+
+Gasto.belongsTo(Area, {
+  foreignKey: {
+    name: "areaId",
+    allowNull: false,
+  },
+  as: "area",
+});
+
+Ingreso.belongsTo(Area, {
+  foreignKey: {
+    name: "areaId",
+    allowNull: false,
+  },
+  as: "area",
+});
+
+Employee.belongsTo(Area, {
+  foreignKey: {
+    name: "areaId",
+    allowNull: false,
+  },
+  as: "area",
+});
+
+Area.hasMany(Employee, {
+  foreignKey: "areaId",
+  as: "employees",
 });
 
 module.exports = {

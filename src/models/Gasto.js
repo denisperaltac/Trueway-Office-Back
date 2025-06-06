@@ -22,6 +22,10 @@ const Gasto = (sequelize) => {
     proveedorId: {
       type: DataTypes.INTEGER,
     },
+    areaId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     fecha: {
       type: DataTypes.DATEONLY,
       allowNull: false,
@@ -41,4 +45,5 @@ const Gasto = (sequelize) => {
     },
   });
 };
+
 module.exports = Gasto;

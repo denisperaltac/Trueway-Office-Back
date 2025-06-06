@@ -21,6 +21,10 @@ const Ingreso = (sequelize) => {
       ),
       allowNull: false,
     },
+    areaId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     fecha: {
       type: DataTypes.DATEONLY,
       allowNull: false,
@@ -28,13 +32,12 @@ const Ingreso = (sequelize) => {
     hora: {
       type: DataTypes.TIME,
     },
-    cajaId: {
-      type: DataTypes.INTEGER,
-    },
+
     deleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
   });
 };
+
 module.exports = Ingreso;

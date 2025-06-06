@@ -38,15 +38,8 @@ const Employee = (sequelize) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    department: {
-      type: DataTypes.ENUM(
-        "Desarrollador",
-        "Marketing",
-        "Oficina",
-        "Realtor",
-        "Seguro",
-        "Call Center"
-      ),
+    areaId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     position: {

@@ -44,9 +44,9 @@ async function getProveedoresService(req) {
 
 async function addProveedorService(Info) {
   try {
-    let NuevaProveedor;
+    let NuevoProveedor;
     if (Info.proveedorId) {
-      NuevaProveedor = await Proveedor.update(
+      NuevoProveedor = await Proveedor.update(
         {
           name: Info.name,
         },
@@ -55,12 +55,12 @@ async function addProveedorService(Info) {
         }
       );
     } else {
-      NuevaProveedor = await Proveedor.create({
+      NuevoProveedor = await Proveedor.create({
         name: Info.name,
       });
     }
 
-    return NuevaProveedor;
+    return NuevoProveedor;
   } catch (error) {
     console.error(error);
     throw new Exception(500, "Error in addProveedorService");

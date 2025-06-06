@@ -53,7 +53,6 @@ async function addIngresoService(Info) {
     monto: Info.monto,
     fecha: Info.fecha || new Date(),
     hora: Info.hora,
-    cajaId: Info.cajaId,
   };
   try {
     let NuevoIngreso;

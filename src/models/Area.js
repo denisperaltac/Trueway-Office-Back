@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 
-const Proveedor = (sequelize) => {
-  sequelize.define("Proveedor", {
-    proveedorId: {
+const Area = (sequelize) => {
+  sequelize.define("Area", {
+    areaId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
@@ -11,17 +11,10 @@ const Proveedor = (sequelize) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    address: {
-      type: DataTypes.STRING,
+    description: {
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     deleted: {
@@ -30,4 +23,5 @@ const Proveedor = (sequelize) => {
     },
   });
 };
-module.exports = Proveedor;
+
+module.exports = Area;

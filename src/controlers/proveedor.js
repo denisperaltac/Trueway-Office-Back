@@ -15,8 +15,8 @@ const getProveedores = async (req, res) => {
 
 const addProveedor = async (req, res) => {
   try {
-    await addProveedorService(req.body);
-    res.status(200).json("Proveedor agregado");
+    const nuevoProveedor = await addProveedorService(req.body);
+    res.status(200).json("Proveedor agregado: " + nuevoProveedor);
   } catch (e) {
     console.log("Error in addProveedor controller" + e);
   }
