@@ -2,6 +2,7 @@ const { Gasto } = require("../db");
 const { Op } = require("sequelize");
 const Exception = require("../exceptions/exception");
 const { Sequelize } = require("sequelize");
+const { Categoria, Area, Proveedor } = require("../db");
 
 async function getGastosService(req) {
   let filters = {
@@ -37,7 +38,10 @@ async function getGastosService(req) {
       where: where,
       limit: pagination.size,
       offset: offset,
-      order: [["fecha", "DESC"]],
+      order: [
+        ["fecha", "DESC"],
+        ["updatedAt", "DESC"],
+      ],
     });
 
     return { result: Gastos, count };
@@ -52,6 +56,7 @@ async function addGastoService(Info) {
     name: Info.name,
     categoriaId: Info.categoriaId,
     proveedorId: Info.proveedorId,
+    areaId: Info.areaId,
     monto: Info.monto,
     fecha: Info.fecha || new Date(),
     pagado: Info.pagado,
@@ -75,17 +80,19 @@ async function addGastoService(Info) {
 
 async function deleteGastoService(id) {
   try {
-    NuevoGasto = await Gasto.update(
-      { deleted: true },
-      {
-        where: { gastoId: id },
-      }
-    );
+    const gasto = await Gasto.findOne({
+      where: { gastoId: id, deleted: false },
+    });
 
-    return { message: "Gasto Eliminado" };
+    if (!gasto) {
+      throw new Exception(404, "Gasto no encontrado");
+    }
+
+    await gasto.update({ deleted: true });
+    return { message: "Gasto eliminado correctamente" };
   } catch (error) {
-    console.error(error);
-    throw new Exception(500, "Error in deleteGastoService");
+    console.error("Error in deleteGastoService:", error);
+    throw new Exception(500, "Error al eliminar el gasto");
   }
 }
 
@@ -131,9 +138,41 @@ async function getGastosByDayService() {
   }));
 }
 
+async function getGastoByIdService(id) {
+  try {
+    const gasto = await Gasto.findOne({
+      where: { gastoId: id, deleted: false },
+      include: [
+        {
+          model: Categoria,
+          as: "categoria",
+        },
+        {
+          model: Area,
+          as: "area",
+        },
+        {
+          model: Proveedor,
+          as: "proveedor",
+        },
+      ],
+    });
+
+    if (!gasto) {
+      throw new Exception(404, "Gasto no encontrado");
+    }
+
+    return gasto;
+  } catch (error) {
+    console.error("Error in getGastoByIdService:", error);
+    throw new Exception(500, "Error al obtener el gasto");
+  }
+}
+
 module.exports = {
   getGastosService,
   addGastoService,
   deleteGastoService,
   getGastosByDayService,
+  getGastoByIdService,
 };

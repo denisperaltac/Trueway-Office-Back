@@ -14,6 +14,6 @@ router.get("/get", getAllAreas);
 router.get("/get/:id", getAreaById);
 router.post("/add", createArea);
 router.put("/update/:id", updateArea);
-router.delete("/delete/:id", deleteArea);
+router.delete("/:id", deleteArea);
 
 module.exports = router;
